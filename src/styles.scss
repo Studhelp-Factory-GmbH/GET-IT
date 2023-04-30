@@ -1,1 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "variables";
+
+html {
+  background: url("/assets/background.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: Goffik, serif;
+}
+
+.header-container{
+  .header{
+    position: relative;
+    width: 100%;
+    height: 10vh;
+    background-color: $light-grey;
+
+    .grey-separator{
+      position: absolute;
+      height: 15px;
+      width: 100%;
+      top: 100%;
+      transform: translate(-50%,-50%, -50%,-50%);
+      background-color: $black;
+    }
+
+    .logo{
+      img{
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        object-fit: contain;
+        display: inline;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+}

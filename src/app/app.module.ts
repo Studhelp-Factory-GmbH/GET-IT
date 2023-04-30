@@ -3,14 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {NgOptimizedImage} from "@angular/common";
+import { CharacterSelectionComponent } from './character-selection/character-selection.component';
+import {ImageSliderModule} from "./imageSlider/imageSlider.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CharacterSelectionComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgOptimizedImage,
+    ImageSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

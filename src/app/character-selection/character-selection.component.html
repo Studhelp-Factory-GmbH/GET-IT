@@ -1,0 +1,36 @@
+<section class="character-selection">
+
+  <section class="character-container">
+
+    <div class="player-name">
+
+      <div class="name">
+        Name
+      </div>
+
+      <div class="username">
+        <div class="form-username">
+          <input type="text" placeholder="Gebe deinen Namen ein..." form="character" name="username">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="player-selection">
+      <div>
+        <app-image-slider [slides]="slides"></app-image-slider>
+      </div>
+    </div>
+
+    <div class="confirm">
+      <form id="character">
+        <button type="submit" class="name">
+          Play
+        </button>
+      </form>
+
+    </div>
+
+  </section>
+
+</section>

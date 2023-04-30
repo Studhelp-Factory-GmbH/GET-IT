@@ -1,0 +1,86 @@
+@import "../../defaults";
+
+.character-selection{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+
+  .character-container{
+    display: flex;
+    flex-direction: column;
+    align-content:space-around;
+    flex-wrap: wrap;
+    row-gap: 100px;
+
+    .player-name {
+      display: flex;
+      gap: 15%;
+      align-items: center;
+      background-color: $light-grey-body;
+      border: 5px solid $black;
+      padding: 10px;
+      border-radius: 15px;
+
+      .name{
+        font-family: Mutant,  serif;
+        font-size: 3rem ;
+        color: white;
+      }
+      .username{
+        width: 350px;
+
+        .form-username{
+          position: relative;
+
+          input{
+            padding: 0.2em;
+            box-sizing: border-box;
+            width: 100%;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -khtml-border-radius: 15px;
+            border-radius:15px;
+          }
+        }
+      }
+    }
+
+    .player-selection{
+      display: flex;
+      justify-content: center;
+      height: 200px;
+      background-color: $light-grey-body;
+      border: 5px solid $black;
+      padding: 30px;
+      border-radius: 15px;
+    }
+
+    .confirm{
+
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      background-color: $success-color;
+      border: 5px solid $black;
+      border-radius: 15px;
+
+      .name{
+        font-family: Mutant,  serif;
+        font-size: 3rem ;
+        color: white;
+        background-color: $success-color;
+        border: none;
+      }
+    }
+  }
+
+
+}
+
+@media screen and (max-width: 500px) {
+  .player-name{
+    flex-direction: column;
+  }
+}
