@@ -1,5 +1,4 @@
-@import "../../defaults";
-
+@import "../../variables";
 .character-selection{
   position: absolute;
   top: 50%;
@@ -12,6 +11,7 @@
     align-content:space-around;
     flex-wrap: wrap;
     row-gap: 100px;
+
 
     .player-name {
       display: flex;
