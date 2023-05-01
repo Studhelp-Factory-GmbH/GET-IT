@@ -1,1 +1,42 @@
-GetIt!
+version: "3.8"
+services:
+  app:
+    container_name: get-it-angular
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - "80:80"
+    restart: always
+
+  db:
+    container_name: get-it-database
+    image: mariadb:10.3
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'db'
+      MYSQL_PASSWORD: 'db'
+      MYSQL_ROOT_PASSWORD: 'db'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - database:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: get-it-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8080:80
+volumes:
+  database:
+
