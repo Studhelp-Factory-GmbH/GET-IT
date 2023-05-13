@@ -1,0 +1,70 @@
+@import "../../variables";
+.gamepage-main-window{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .gamepage-main-window-container{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+    background-color: $light-grey-body;
+    border: 5px solid $black;
+    border-radius: 15px;
+
+    .game-bild{
+      display: flex;
+
+      padding: 150px 500px;
+      margin: 15px;
+      background-color: silver;
+      border: 5px solid $black;
+      border-radius: 15px;
+    }
+
+    .game-communication{
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      margin: 15px;
+
+      background-color: $light-grey-body;
+      border: 5px solid $black;
+      border-radius: 15px;
+
+      .game-players{
+        display: flex;
+
+        padding: 70px 100px;
+        margin: 15px;
+
+        background-color: silver;
+        border: 5px solid $black;
+        border-radius: 15px;
+      }
+
+      .game-chat{
+        display: flex;
+
+        padding: 200px 300px;
+        margin: 15px;
+
+        background-color: silver;
+        border: 5px solid $black;
+        border-radius: 15px;
+      }
+    }
+  }
+}
+
+.player-text{
+  padding: 10px;
+}
+
+.chat-text{
+  padding: 10px;
+
+}
