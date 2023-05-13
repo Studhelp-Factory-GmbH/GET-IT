@@ -5,10 +5,13 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/Dockerfile
+    command: sh -c "npm start"
     ports:
-      - "80:80"
-    restart: always
-
+      - 80:4200
+    working_dir: /home/node/app
+    volumes:
+      - ./:/home/node/app
+      - node_modules:/home/node/app/node_modules
   db:
     container_name: get-it-database
     image: mariadb:10.3
@@ -39,4 +42,5 @@ services:
       - 8080:80
 volumes:
   database:
+  node_modules:
 
