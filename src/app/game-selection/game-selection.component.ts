@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./game-selection.component.scss']
 })
 export class GameSelectionComponent {
-  
+
+    protected readonly Component = Component;
 }
