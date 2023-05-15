@@ -231,11 +231,13 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
     background-color: rgba($black, 0.35);
     border: 5px solid $black;
     border-radius: 15px;
     align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
 
 
     .share{
@@ -243,7 +245,7 @@
       justify-content: space-around;
       flex-wrap: wrap;
       gap: 5%;
-      background-color: rgba($dark-grey, 0.75);
+      background-color: rgba($dark-grey, 0.55);
       border: 5px solid $black;
       border-radius: 15px;
       width: 30%;
@@ -264,14 +266,14 @@
   }
 
   .game-windows{
-    width: 65%;
+    width: 68%;
     height: 95%;
     position: relative;
 
   }
 
   .game-info{
-    width: 30%;
+    width: 29%;
     height: 95%;
     position: relative;
     display: flex;
@@ -306,7 +308,7 @@
       .chat{
         position: relative;
         width: 90%;
-        height: 80%;
+        height: 77%;
 
         .chat-controls-container{
           position: absolute;
@@ -334,11 +336,12 @@
               border: solid;
             }
             button{
-              border: solid;
+              border: solid black;
               -moz-border-radius: 15px;
               -webkit-border-radius: 15px;
               -khtml-border-radius: 15px;
               border-radius:15px;
+              color: white;
             }
 
           }
@@ -349,7 +352,7 @@
   }
 
   .background{
-    background-color: rgba($light-grey-body, 0.75);
+    background-color: rgba($light-grey-body, 0.55);
     border: 5px solid $black;
     border-radius: 15px;
   }
@@ -369,7 +372,7 @@
     right: 0;
     height: 50px;
     transform: translateY(50%);
-    background-color: rgba(90, 90, 90, 0.75);
+    background-color: rgba(90, 90, 90, 0.55);
     width: 100%;
 
     .chat-controls{
@@ -390,11 +393,12 @@
       border: solid;
     }
     button{
-      border: solid;
+      border: solid black;
       -moz-border-radius: 15px;
       -webkit-border-radius: 15px;
       -khtml-border-radius: 15px;
       border-radius:15px;
+      color: white;
     }
   }
   .socials{
