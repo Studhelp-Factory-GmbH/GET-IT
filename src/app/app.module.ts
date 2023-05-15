@@ -8,19 +8,22 @@ import {NgOptimizedImage} from "@angular/common";
 import { CharacterSelectionComponent } from './character-selection/character-selection.component';
 import {ImageSliderModule} from "./imageSlider/imageSlider.module";
 import { GamepageComponent } from './gamepage/gamepage.component';
+import { GameSelectionComponent } from './game-selection/game-selection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharacterSelectionComponent,
     GamepageComponent,
+    GameSelectionComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot([
       {path: "", component: CharacterSelectionComponent},
-      {path: "app-gamepage", component: AppComponent}
+      {path: "app-gamepage", component: AppComponent},
+      {path: "game-selection", component: GameSelectionComponent}
     ]),
     NgOptimizedImage,
     ImageSliderModule

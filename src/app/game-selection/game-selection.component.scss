@@ -1,0 +1,67 @@
+@import "../../variables";
+@import "../../defaults";
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+
+
+.game-selection{
+
+  .room-input {
+    width: 70%;
+  }
+  .room-input {
+    width: 30%;
+  }
+
+
+  .btn-secondary {
+    margin: 10px;
+  }
+  .custom-margin {
+    margin-right: 20px;
+  }
+  .custom-margin-bottom {
+    margin-bottom: 100px;
+  }
+  .custom-left-margin {
+    margin-left: -170px;
+    margin-top: 90px;
+  }
+  .btn-primary{
+    margin-bottom: 8px;
+  }
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .btn-zoom {
+    transition: transform 0.5s;
+  }
+
+  .btn-zoom:hover {
+    transform: scale(1.2);
+    border: 2px solid black;
+  }
+
+  .btn-square {
+    width: 150px;
+    height: 100px;
+    padding: 0;
+    border-radius: 10px;
+    border: 2px solid black;
+  }
+  .blur {
+    filter: blur(3px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .room{
+    flex-direction: column;
+  }
+  .room-input {
+    width: 70% !important;
+  }
+}
+
