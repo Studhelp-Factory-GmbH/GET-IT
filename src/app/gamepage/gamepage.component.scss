@@ -1,217 +1,3 @@
-/*
-@import "../../variables";
-.gamepage-main-window{
-  position: absolute;
-  top: 55%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  .gamepage-main-window-container{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-
-    background-color: $light-grey-body;
-    border: 5px solid $black;
-    border-radius: 15px;
-
-    .game-bild{
-      display: flex;
-
-      padding: 150px 500px;
-      margin: 15px;
-      background-color: silver;
-      border: 5px solid $black;
-      border-radius: 15px;
-    }
-
-    .game-communication{
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-
-      margin: 15px;
-
-      background-color: $light-grey-body;
-      border: 5px solid $black;
-      border-radius: 15px;
-
-      .game-players{
-        display: flex;
-
-        padding: 70px 100px;
-        margin: 15px;
-
-        background-color: silver;
-        border: 5px solid $black;
-        border-radius: 15px;
-      }
-
-      .game-chat{
-        display: flex;
-
-        padding: 250px 300px;
-        padding-bottom: 250px;
-        margin: 15px;
-
-        background-color: silver;
-        border: 5px solid $black;
-        border-radius: 15px;
-      }
-    }
-  }
-}
-
-.player-text{
-}
-
-.chat-text{
-}
-
-@media screen and (max-width: 500px){
-  .game-chat {
-    flex-direction: row;
-  }
-}
-*/
-/*
-@import "../../variables";
-.gamepage-main-window{
-  position: absolute;
-  top: 57%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  .gamepage-main-windows-socials-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    min-height: 10vh;
-    min-width: 80vw;
-    padding: 15px;
-
-    background-color: rgba($black, 0.35);
-    border: 5px solid $black;
-    border-radius: 15px;
-
-    .gamepage-socials{
-      width: 400px;
-      background-color: rgba($dark-grey, 0.75);
-      border: 5px solid $black;
-      border-radius: 15px;
-    }
-
-    .gamepage-gamename{
-      width: 400px;
-      background-color: rgba($dark-grey, 0.75);
-      border: 5px solid $black;
-      border-radius: 15px;
-    }
-
-    .gamepage-raumcode{
-      width: 300px;
-      background-color: rgba($dark-grey, 0.75);
-      border: 5px solid $black;
-      border-radius: 15px;
-    }
-  }
-
-  .gamepage-main-window-game-container{
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-
-    min-height: 65vh;
-    min-width: 80vw;
-
-    margin-top: 20px;
-    padding: 15px;
-
-    background-color: rgba($black, 0.35);
-    border: 5px solid $black;
-    border-radius: 15px;
-
-    .game-bild{
-      display: flex;
-      flex-grow: 2;
-
-      background-color: rgba($dark-grey, 0.75);
-      border: 5px solid $black;
-      border-radius: 15px;
-    }
-
-    .game-communication{
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      gap: 20px;
-
-      .game-players{
-        // TODO Bordering/Padding von Playerlist
-        display: flex;
-
-        min-height: 25vh;
-
-        background-color: rgba($dark-grey, 0.75);
-        border: 5px solid $black;
-        border-radius: 15px;
-
-        .game-playerlist{
-
-          background-color: rgba($light-grey-body, 0.75);
-          border: 5px solid $black;
-          border-radius: 15px;
-        }
-      }
-
-      .game-chat{
-        // TODO Bordering/Padding von Chatmessages
-        display: flex;
-
-        min-height: 40vh;
-
-        background-color: rgba($dark-grey, 0.75);
-        border: 5px solid $black;
-        border-radius: 15px;
-
-        .game-chatmessages{
-          background-color: rgba($light-grey-body, 0.75);
-          border: 5px solid $black;
-          border-radius: 15px;
-        }
-      }
-    }
-  }
-}
-
-.player-text{
-}
-
-.chat-text{
-}
-
-@media screen and (max-width: 1150px) {
-  .gamepage-main-windows-socials-container{
-    flex-direction: column;
-  }
-
-  .gamepage-main-window-game-container{
-    flex-direction: column !important;
-
-    .game-bild{
-      min-height: 30vh;
-    }
-
-    .game-players{
-      min-height: 20vh !important;
-    }
-    .game-chat{
-      display: none !important;
-    }
-  }
-}
-*/
 @import "../../defaults";
 .gamepage-main-window{
   width:100%;
@@ -250,6 +36,43 @@
       border-radius: 15px;
       width: 30%;
       height: 100px;
+
+      .share-whatsapp {
+        .share-whatsapp-button {
+          margin-top: 13px;
+          background: none;
+          border: none;
+          padding: 0;
+        }
+      }
+
+      .share-insta {
+        .share-insta-button {
+          margin-top: 13px;
+          background: none;
+          border: none;
+          padding: 0;
+        }
+      }
+
+      .share-twitter {
+        .share-twitter-button {
+          margin-top: 13px;
+          background: none;
+          border: none;
+          padding: 0;
+        }
+      }
+
+      .share-discord {
+        .share-discord-button {
+          margin-top: 13px;
+          background: none;
+          border: none;
+          padding: 0;
+        }
+      }
+
     }
   }
 
@@ -266,10 +89,35 @@
   }
 
   .game-windows{
+    display: flex;
     width: 68%;
     height: 95%;
     position: relative;
+    justify-content: center;
+    align-items: center;
 
+    .game-game{ // TODO: Nico einmal rübergucken bitte
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 55%;
+      height: 85%;
+      overflow: hidden;
+
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
+      background-color: rgba($dark-grey, 0.75);
+      border: 5px solid $black;
+      border-radius: 50%;
+
+      // https://www.bildverkleinern.com/
+      #zoomed-in-picture {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+    }
   }
 
   .game-info{
@@ -424,6 +272,11 @@
       width: 95%;
       height: 96%!important;
       margin-top: 2%;
+
+      .game-game{ // TODO: Nico einmal rübergucken bitte
+        width: 75%;
+        height: 85%;
+      }
     }
 
   }

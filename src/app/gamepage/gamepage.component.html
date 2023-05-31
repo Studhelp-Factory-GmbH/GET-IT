@@ -1,42 +1,28 @@
-<!--
-<section class="gamepage-main-window">
-
-  <section class="gamepage-main-windows-socials-container">
-
-    <div class="gamepage-socials"></div>
-    <div class="gamepage-gamename"></div>
-    <div class="gamepage-raumcode"></div>
-
-  </section>
-
-  <section class="gamepage-main-window-game-container">
-
-    <div class="game-bild"></div>
-
-    <div class="game-communication">
-      <div class="game-players">
-        <div class="game-playerlist"></div>
-      </div>
-      <div class="game-chat">
-        <div class="game-chatmessages"></div>
-      </div>
-    </div>
-
-  </section>
-
-</section>
--->
-
-
 <section class="gamepage-main-window">
 
   <div class="center-all">
     <div class="socials">
       <div class="share">
-        <div>#wa</div>
-        <div>#insta</div>
-        <div>#twitter</div>
-        <div>#dc</div>
+        <div class="share-whatsapp">
+          <button class="share-whatsapp-button" (click)="shareOnWhatsapp()">
+            <img src="assets/social-logos/whatsapp_logo.png">
+          </button>
+        </div>
+        <div class="share-insta">
+          <button class="share-insta-button" (click)="shareOnInstagram()">
+            <img src="assets/social-logos/insta_logo.png">
+          </button>
+        </div>
+        <div class="share-twitter" (click)="shareOnTwitter()">
+          <button class="share-twitter-button">
+            <img src="assets/social-logos/twitter_logo.png">
+          </button>
+        </div>
+        <div class="share-discord" (click)="shareOnDiscord()">
+          <button class="share-discord-button">
+            <img src="assets/social-logos/discord_logo.png">
+          </button>
+        </div>
       </div>
       <div class="font-white">Errate das Bild</div>
       <div class="room-code">
@@ -48,7 +34,12 @@
 
   <div class="center-all game">
     <div class="game-windows background">
-
+      <div class="game-game">
+        <div id="zoomed-picture">
+          <!-- <img src="assets/guessing-pictures/spongebob_1.png" id="zoomed-in-picture"> -->
+          <img [src]="zoomedPictureSrc" id="zoomed-in-picture">
+        </div>
+      </div>
     </div>
     <div class="game-info">
       <div class="game-character background">
@@ -62,10 +53,10 @@
           <div class="chat-controls-container">
             <div class="chat-controls">
               <div>
-                <input type="text" placeholder="Schreibe etwas.."  name="chat-message">
+                <input id="guess-input" type="text" placeholder="Guess it!" name="chat-message">
               </div>
               <div>
-                <button type="submit" class="primary-button">Senden</button>
+                <button id="submit-button" type="submit" class="primary-button">GET IT!</button>
               </div>
             </div>
           </div>
@@ -87,3 +78,4 @@
 
 </div>
 </section>
+

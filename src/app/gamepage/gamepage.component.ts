@@ -1,10 +1,119 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-gamepage',
   templateUrl: './gamepage.component.html',
   styleUrls: ['./gamepage.component.scss']
 })
-export class GamepageComponent {
+export class GamepageComponent implements OnInit {
+
+  zoomedPictureSrc!: string;
+
+  zoomedPicture!: HTMLElement;
+  zoomLevel = 1;
+  zoomIncrement = 0.15;
+
+
+
+  ngOnInit() {
+    // @ts-ignore
+    this.zoomedPicture = document.getElementById("zoomed-picture");
+    this.startZoomOutInterval();
+    this.checkGuess();
+    this.getRandomPicture()
+  }
+
+  getRandomPicture() {
+    const pictureList = [
+      "garry_1.png",
+      "patrick_1.png",
+      "sandy_1.png",
+      "spongebob_1.png",
+      "spongebob_2.png"
+    ];
+    const randomIndex = Math.floor(Math.random() * pictureList.length);
+
+    // Construct the path to the random picture
+    this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
+
+  }
+  checkGuess() {
+    const submitButton = document.getElementById("submit-button");
+
+    // @ts-ignore
+    submitButton.addEventListener("click", () => {
+      const guessInput = document.getElementById("guess-input") as HTMLInputElement;
+
+      const guess = guessInput.value.trim().toLowerCase();
+      const pictureFilename = this.zoomedPicture.querySelector("img")?.getAttribute("src");
+      const pictureName = pictureFilename ? pictureFilename.substring(pictureFilename.lastIndexOf("/") + 1, pictureFilename.lastIndexOf(".")).toLowerCase() : '';
+      const final_pictureName = pictureName.slice(0, -2);
+
+      //console.log(final_pictureName);
+      //console.log(guess)
+
+      if (guess === final_pictureName) {
+        alert("Richtig!");
+      } else {
+        alert("Falsch!");
+      }
+    });
+  }
+
+  startZoomOutInterval() {
+    const zoomOutInterval = setInterval(() => {
+      if (this.zoomLevel <= 1) {
+        clearInterval(zoomOutInterval);
+      } else {
+        this.zoomLevel -= this.zoomIncrement;
+        this.updateZoomedPictureTransform();
+      }
+    }, 100);
+  }
+
+  updateZoomedPictureTransform() {
+    this.zoomedPicture.style.transform = `scale(${this.zoomLevel})`;
+  }
+
+  shareOnWhatsapp() {
+    const raumcode = this.getRaumcode();
+    const text = `Komm und Spiele mit mir eine Runde GET-IT! Raumcode: ${raumcode}`;
+    const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappShareUrl, '_blank');
+  }
+
+  shareOnInstagram() {
+    const raumcode = this.getRaumcode();
+    const text = `Komm und Spiele mit mir eine Runde GET-IT! Raumcode: ${raumcode}`;
+    this.copyTextToClipboard(text);
+    alert("Einladung in Zwischenablage kopiert! :)");
+  }
+
+  shareOnTwitter() {
+    const raumcode = this.getRaumcode();
+    const text = "Komm und Spiele mit mir eine Runde GET-IT! Raumcode:";
+    const twitterShareUrl = `https://twitter.com/share?url=${raumcode}&text=${text}`;
+    window.open(twitterShareUrl, '_blank');
+  }
+
+  shareOnDiscord() {
+    const raumcode = this.getRaumcode();
+    const text = `Komm und Spiele mit mir eine Runde GET-IT! Raumcode: ${raumcode}`;
+    this.copyTextToClipboard(text);
+    alert("Einladung in Zwischenablage kopiert! :)");
+  }
+
+  getRaumcode() {
+    return "getRaumcode()";
+  }
+
+  copyTextToClipboard(text: string) {
+    const textAreaElement = document.createElement("textarea");
+    textAreaElement.value = text;
+    document.body.append(textAreaElement);
+    textAreaElement.select();
+    document.execCommand("copy");
+    document.body.removeChild(textAreaElement);
+  }
 
 }
