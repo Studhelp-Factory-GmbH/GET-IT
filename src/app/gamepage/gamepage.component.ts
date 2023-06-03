@@ -10,7 +10,7 @@ export class GamepageComponent implements OnInit {
   zoomedPictureSrc!: string;
 
   zoomedPicture!: HTMLElement;
-  zoomLevel = 1;
+  zoomLevel = 35;
   zoomIncrement = 0.15;
 
 
@@ -33,7 +33,6 @@ export class GamepageComponent implements OnInit {
     ];
     const randomIndex = Math.floor(Math.random() * pictureList.length);
 
-    // Construct the path to the random picture
     this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
 
   }
