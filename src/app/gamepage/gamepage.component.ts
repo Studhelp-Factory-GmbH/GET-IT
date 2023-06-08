@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-gamepage',
   templateUrl: './gamepage.component.html',
   styleUrls: ['./gamepage.component.scss']
 })
+
 export class GamepageComponent implements OnInit {
 
   zoomedPictureSrc!: string;
-
   zoomedPicture!: HTMLElement;
   zoomLevel = 35;
   zoomIncrement = 0.15;
-
-
 
   ngOnInit() {
     // @ts-ignore
@@ -32,10 +31,9 @@ export class GamepageComponent implements OnInit {
       "spongebob_2.png"
     ];
     const randomIndex = Math.floor(Math.random() * pictureList.length);
-
     this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
-
   }
+  
   checkGuess() {
     const submitButton = document.getElementById("submit-button");
 

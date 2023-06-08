@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-server",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Cengizhan Ömür",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "express": "^4.16.1"
+  }
+}
