@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from "@angular/router"
 
-
 @Component({
   selector: 'app-game-selection',
   templateUrl: './game-selection.component.html',
@@ -17,7 +16,9 @@ export class GameSelectionComponent implements OnInit {
   chatobject : any | undefined
 
   // Konstruktor:
-  constructor(private http : HttpClient, private router: Router) {}
+  constructor(
+    private http : HttpClient, 
+    private router: Router) {}
 
   // Methode:
   ngOnInit(): void {
@@ -59,20 +60,20 @@ export class GameSelectionComponent implements OnInit {
       avatar_id: picture_id
     };
 
-
-
     // Speichern eines Spielers:
     this.http.post(apiUrlSpieler, items)
-      .subscribe(
-
-      )
+    .subscribe(
+      () => {
+        console.log('Spieler wurde erfolgreich hiunzugefügt!');
+      },
+      (error) => {
+        console.error('Fehler beim Hinzufügen des Spielers:', error);
+      }
+    )
   }
 
   // Button funktionalitäten:
   async handleClick() {   // Zoomspiel-Button
-
-    // Urls:
-    const apiUrlChat = 'http://localhost:3307/chat';
 
     // Konstanten:
     const spiel_id = 1; // --> 1 steht für Zoom-Spiel!
@@ -80,16 +81,12 @@ export class GameSelectionComponent implements OnInit {
 
     // Generieren einer 4-Stelligen Zufallszahl als Raumcode:
     this.raumcode = this.generateFourDigitRandomNumber();
+    console.log("Raumcode: ", this.raumcode);
 
     // Abfragen des Spielnames:
     this.getSpielnameFromAPI(apiUrlSpiel)
 
     // Chat erstellen:
-    const chat_body = {
-      raumcode: this.raumcode
-    };
-
-
     const chat = await this.erstelleChat(`http://localhost:3307/createChat`).then(function (result) {
       const resultArr = JSON.parse(JSON.stringify(result))
       if (resultArr["success"]) {
@@ -97,10 +94,27 @@ export class GameSelectionComponent implements OnInit {
       }
     });
 
+    // Erstellen eines Raumes:
     const room = await this.createRoom(`http://localhost:3307/createRoom`, chat, spiel_id).then(function (result) {
       return JSON.parse(JSON.stringify(result))
     });
     await this.router.navigate(['/app-gamepage', this.raumcode])
+  }
+
+  // HttpClient-Abfragen:
+  getSpielnameFromAPI(url:String) {
+    this.http.get(url.toString())
+    .subscribe(
+      (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
+        let js_array = JSON.parse(JSON.stringify(response))
+        console.log(js_array[0]['spielname'])
+        console.log('Antwort: ', response);
+        this.spielname = js_array[0]['spielname']
+      },
+      (error) => {
+        console.error('Fehler: ', error);
+      }
+    );
   }
 
   async createRoom(url: string,chat: number, spiel: number){
@@ -108,22 +122,7 @@ export class GameSelectionComponent implements OnInit {
     return this.http.post(url.toString(), raumPayload).toPromise()
   }
 
-  // HttpClient-Abfragen:
-  getSpielnameFromAPI(url: string) {
-    this.http.get(url.toString())
-    .subscribe(
-      (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
-        const js_array = JSON.parse(JSON.stringify(response))
-
-        this.spielname = js_array[0]['spielname']
-      }
-    );
-  }
-
-
-
-
-   async erstelleChat(url: string  ) {
+  async erstelleChat(url: string  ) {
     const chatPayload = {raumcode: this.raumcode }
     return this.http.post(url.toString(), chatPayload).toPromise()
   }

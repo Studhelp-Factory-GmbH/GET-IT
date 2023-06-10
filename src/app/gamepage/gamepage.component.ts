@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-gamepage',
@@ -13,6 +14,14 @@ export class GamepageComponent implements OnInit {
   zoomedPicture!: HTMLElement;
   zoomLevel = 35;
   zoomIncrement = 0.15;
+  roomCode = "";
+
+   // API-Variablen:
+   chat_id : Number | undefined
+
+  constructor(private route:ActivatedRoute, private http:HttpClient)
+  {
+  }
 
   ngOnInit() {
     // @ts-ignore
@@ -20,7 +29,33 @@ export class GamepageComponent implements OnInit {
     this.startZoomOutInterval();
     this.checkGuess();
     this.getRandomPicture()
+    this.roomCode = this.route.snapshot.params['roomcode'];
   }
+
+
+  // ---
+  // Buttons:
+  
+  // API-Abfragen:
+  getChatID(roomcode:number) {
+    this.http.get(`http://localhost:3307/spiel/${roomcode}`)
+    .subscribe(
+      (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
+        console.log('Answer: ', response);
+        return response;
+      },
+      (error) => {
+        console.error('Failed: ', error);
+      }
+    );
+  }
+
+  createMessage(data:string) {
+    this.http.post('http://localhost:3307/spieler', data)
+  }
+
+  // ---
+
 
   getRandomPicture() {
     const pictureList = [
@@ -48,6 +83,11 @@ export class GamepageComponent implements OnInit {
 
       //console.log(final_pictureName);
       //console.log(guess)
+
+      // --> API-Call: Saving the messages!
+      const raumcode = this.route.snapshot.params['roomcode'];
+      console.log(raumcode);
+      this.getChatID(raumcode);
 
       if (guess === final_pictureName) {
         alert("Richtig!");
@@ -101,7 +141,7 @@ export class GamepageComponent implements OnInit {
   }
 
   getRaumcode() {
-    return "getRaumcode()";
+    return this.roomCode;
   }
 
   copyTextToClipboard(text: string) {

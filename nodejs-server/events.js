@@ -15,7 +15,6 @@ function createRouter(db) {
         res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         return;
       }
-
       res.json({ message: 'Daten erfolgreich eingefügt' });
     });
   });
@@ -49,11 +48,40 @@ function createRouter(db) {
     });
   });
 
+  // --> Nachricht erstellen:
+  router.post('/message'), (req, res) => {
+    const { message, chat_id } = req.body;
+    const sql = 'INSERT INTO Nachricht (nachricht_string, chat_id) VALUES (?, ?)';
+    db.query(sql, [raumcode], (err) => {
+      if(err) {
+        console.error('Failed creating message!', err);
+        res.status(500).json({ error: 'Failed creating message!'});
+        return;
+      }
+      res.json({ message: 'Created message susscesfully!'});
+    });
+  }
+
   // Spielnahmen abfragen:
   router.get('/spiel/:zahl', function (req, res) {
     const spiel_id = req.params.zahl;
     const sql = 'SELECT spielname FROM Spiel WHERE id=?'
     db.query(sql, [spiel_id], (error, results) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({status: 'error'});
+      } else {
+        res.status(200).json(results);
+        console.log(results);
+      }
+    });
+  });
+
+  // Chat_id abfragen:
+  router.get('/chat/:rcode', function (req, res) {
+    const roomcode = req.params.rcode;
+    const sql = 'SELECT id FROM Chat WHERE raumcode=?'
+    db.query(sql, [roomcode], (error, results) => {
       if (error) {
         console.log(error);
         res.status(500).json({status: 'error'});
