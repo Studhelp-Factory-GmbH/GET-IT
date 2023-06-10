@@ -16,26 +16,35 @@ export class GamepageComponent implements OnInit {
   zoomIncrement = 0.15;
   roomCode = "";
 
-   // API-Variablen:
-   chat_id : Number | undefined
-
-  constructor(private route:ActivatedRoute, private http:HttpClient)
+  constructor(private http : HttpClient, private route:ActivatedRoute)
   {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // @ts-ignore
     this.zoomedPicture = document.getElementById("zoomed-picture");
     this.startZoomOutInterval();
     this.checkGuess();
     this.getRandomPicture()
+
     this.roomCode = this.route.snapshot.params['roomcode'];
+
+    // test um die Spieler zu laden, das muss noch gemacht werden, ist noch buggy!
+    const player_count = await this.getPlayer("http://localhost:3307/getPlayer").then(function (result) {
+      const resultArr = JSON.parse(JSON.stringify(result))
+      if (resultArr["success"]) {
+        console.log(resultArr);
+        //return resultArr['chat']
+      }
+      console.log(resultArr);
+    });
+
   }
 
 
   // ---
   // Buttons:
-  
+
   // API-Abfragen:
   getChatID(roomcode:number) {
     this.http.get(`http://localhost:3307/spiel/${roomcode}`)
@@ -138,6 +147,11 @@ export class GamepageComponent implements OnInit {
     const text = `Komm und Spiele mit mir eine Runde GET-IT! Raumcode: ${raumcode}`;
     this.copyTextToClipboard(text);
     alert("Einladung in Zwischenablage kopiert! :)");
+  }
+
+  async getPlayer(url: string) {
+    const playerPayload = {raumcode: this.roomCode }
+    return this.http.post(url.toString(), playerPayload).toPromise()
   }
 
   getRaumcode() {

@@ -14,10 +14,11 @@ export class GameSelectionComponent implements OnInit {
   spielname : any;
   raumcode : number | undefined;
   chatobject : any | undefined
+  spielername : any
 
   // Konstruktor:
   constructor(
-    private http : HttpClient, 
+    private http : HttpClient,
     private router: Router) {}
 
   // Methode:
@@ -60,6 +61,8 @@ export class GameSelectionComponent implements OnInit {
       avatar_id: picture_id
     };
 
+    this.spielername = username;
+
     // Speichern eines Spielers:
     this.http.post(apiUrlSpieler, items)
     .subscribe(
@@ -86,7 +89,6 @@ export class GameSelectionComponent implements OnInit {
     // Abfragen des Spielnames:
     this.getSpielnameFromAPI(apiUrlSpiel)
 
-    // Chat erstellen:
     const chat = await this.erstelleChat(`http://localhost:3307/createChat`).then(function (result) {
       const resultArr = JSON.parse(JSON.stringify(result))
       if (resultArr["success"]) {
@@ -98,15 +100,27 @@ export class GameSelectionComponent implements OnInit {
     const room = await this.createRoom(`http://localhost:3307/createRoom`, chat, spiel_id).then(function (result) {
       return JSON.parse(JSON.stringify(result))
     });
+
+    // Hole id vom Spieler
+    const id = await this.getPlayerIdFromName('http://localhost:3307/getPlayerIdFromName', this.spielername).then(function(result){
+      return JSON.parse(JSON.stringify(result))
+    });
+    console.log(id)
+
+    // TODO
+    // Füge spieler zu dem Raum hinzu
+    // Nutze rest
+
+
     await this.router.navigate(['/app-gamepage', this.raumcode])
   }
 
   // HttpClient-Abfragen:
-  getSpielnameFromAPI(url:String) {
+  getSpielnameFromAPI(url:string) {
     this.http.get(url.toString())
     .subscribe(
       (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
-        let js_array = JSON.parse(JSON.stringify(response))
+        const js_array = JSON.parse(JSON.stringify(response))
         console.log(js_array[0]['spielname'])
         console.log('Antwort: ', response);
         this.spielname = js_array[0]['spielname']
@@ -120,6 +134,16 @@ export class GameSelectionComponent implements OnInit {
   async createRoom(url: string,chat: number, spiel: number){
     const raumPayload = {raumcode: this.raumcode, chat_id: chat, spiel_id:spiel }
     return this.http.post(url.toString(), raumPayload).toPromise()
+  }
+
+  async getPlayerIdFromName(url: string, spielername: string) {
+    const playerIdPayload = {spielername: spielername}
+    return this.http.post(url.toString(), playerIdPayload).toPromise()
+  }
+
+  async addPlayerToRoom(url: string, spieler_id: number) {
+    const playerPayload = {raumcode: this.raumcode, spieler_id: spieler_id}
+    return this.http.post(url.toString(), playerPayload).toPromise()
   }
 
   async erstelleChat(url: string  ) {

@@ -19,11 +19,60 @@ function createRouter(db) {
     });
   });
 
+  // --> Hole Spieler_id durch Spielername (wird gebraucht für die game selection page, um es für die funktion insertPlayerIntoRoom machen zu können)
+  router.post('/getPlayerIdFromName', (req, res) => {
+    const { spielername}  = req.body;
+    const sql = 'SELECT id FROM Spieler WHERE spielername = (?)';
+    db.query(sql, [spielername], (err, result) => {
+      if (err) {
+        console.error('Fehler beim Suchen von dem Spieler', err, res);
+        res.status(500).json({ error: 'Fehler beim Suchen vom Spieler' });
+        return;
+      }
+
+      console.log("result: " + result)
+      res.json({ message: 'Spieler erfolgreich gefunden', id: result.id});
+    });
+  });
+
+  // --> Füge Spieler zu dem Raum hinzu (TODO: Füge es in game selection hinzu)
+  router.post('/insertPlayerIntoRoom', (req, res) => {
+    const { raumcode, spieler_id}  = req.body;
+    const sql = 'INSERT INTO Spieler_Raum (spieler_id, raumcode) VALUES (?,?) ';
+    db.query(sql, [raumcode, spieler_id], (err, result) => {
+      if (err) {
+        console.error('Fehler beim Einfügen der Spieler:', err, res);
+        res.status(500).json({ error: 'Fehler beim Einfügen vom Spieler' });
+        return;
+      }
+
+      console.log("result: " + result)
+      res.json({ message: 'Spieler erfolgreich zum Raum hinzugefügt'});
+    });
+  });
+
+  // --> Hole Spieler von dem Raum
+  router.post('/getPlayer', (req, res) => {
+    const { raumcode } = req.body;
+    const sql = 'SELECT spieler_id FROM Spieler_Raum sr WHERE sr.raumcode = (?) ';
+    db.query(sql, [raumcode], (err, result) => {
+      if (err) {
+        console.error('Fehler beim Suchen der Daten:', err, res);
+        res.status(500).json({ error: 'Fehler beim Suchen der Daten' });
+        return;
+      }
+
+      console.log("result: " + result)
+      res.json({ message: 'Spieler erfolgreich eingefügt', players: result.spieler_id});
+    });
+  });
+
+
   // --> Raumerstellen:
   router.post('/createRoom', (req, res) => {
     const { raumcode, spiel_id, chat_id } = req.body;
     const sql = 'INSERT INTO Raum (raumcode, spiel_id, chat_id) VALUES (?, ?, ?)';
-    db.query(sql, [raumcode, spiel_id, chat_id], (err) => {
+    db.query(sql, [raumcode, spiel_id, chat_id], (err, res) => {
       if(err) {
         console.error('Fehler beim erstellen des Raums!', err);
         res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});

@@ -6,7 +6,11 @@ import { CharacterSelectionComponent } from './character-selection/character-sel
 
 const routes: Routes = [
   { path: '', component: CharacterSelectionComponent},
+<<<<<<< Updated upstream
   { path: `app-gamepage`, component: GamepageComponent },
+=======
+  { path: 'app-gamepage', component: GamepageComponent},
+>>>>>>> Stashed changes
   { path: 'game-selection', component: GameSelectionComponent}
 ];
 
