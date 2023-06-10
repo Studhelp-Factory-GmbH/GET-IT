@@ -15,16 +15,16 @@ function createRouter(db) {
         res.status(500).json({ error: 'Fehler beim Einfügen der Daten' });
         return;
       }
-  
+
       res.json({ message: 'Daten erfolgreich eingefügt' });
     });
   });
 
   // --> Raumerstellen:
-  router.post('/raum'), (req, res) => {
-    const { raumcode, spiel_id } = req.body;
+  router.post('/createRoom', (req, res) => {
+    const { raumcode, spiel_id, chat_id } = req.body;
     const sql = 'INSERT INTO Raum (raumcode, spiel_id, chat_id) VALUES (?, ?, ?)';
-    db.query(sql, [raumcode, spiel_id], (err) => {
+    db.query(sql, [raumcode, spiel_id, chat_id], (err) => {
       if(err) {
         console.error('Fehler beim erstellen des Raums!', err);
         res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});
@@ -32,21 +32,22 @@ function createRouter(db) {
       }
       res.json({ message: 'Raum erfolgreich erstellt!'});
     });
-  }
+  });
 
   // --> Chat erstellen:
-  router.post('/chat'), (req, res) => {
+  router.post('/createChat', (req, res) => {
     const { raumcode } = req.body;
-    const sql = 'INSERT INTO Raum (raumcode) VALUES (?)';
-    db.query(sql, [raumcode], (err) => {
-      if(err) {
-        console.error('Fehler beim erstellen des Raums!', err);
-        res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});
-        return;
+    const sql = 'INSERT INTO Chat (raumcode) VALUES (?)';
+    db.query(sql, [raumcode], (error, result) => {
+      if (error) {
+        console.error('Fehler beim Einfügen des Datensatzes:', error);
+        res.status(500).json({ success: false });
+      } else {
+        console.log('Datensatz erfolgreich eingefügt:', result);
+        res.status(200).json({ success: true, chat: result.insertId });
       }
-      res.json({ message: 'Raum erfolgreich erstellt!'});
     });
-  }
+  });
 
   // Spielnahmen abfragen:
   router.get('/spiel/:zahl', function (req, res) {

@@ -24,7 +24,7 @@ import { GameSelectionComponent } from './game-selection/game-selection.componen
     AppRoutingModule,
     RouterModule.forRoot([
       {path: "", component: CharacterSelectionComponent},
-      {path: "app-gamepage", component: AppComponent},
+      {path: "app-gamepage/:roomcode", component: AppComponent},
       {path: "game-selection", component: GameSelectionComponent}
     ]),
     NgOptimizedImage,

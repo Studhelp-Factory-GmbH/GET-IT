@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {Router} from "@angular/router"
+
 
 @Component({
   selector: 'app-game-selection',
@@ -7,14 +9,15 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./game-selection.component.scss'],
 })
 export class GameSelectionComponent implements OnInit {
-  
+
   // Attribute:
   protected readonly Component = Component;
   spielname : any;
-  raumcode : Number | undefined;
+  raumcode : number | undefined;
+  chatobject : any | undefined
 
   // Konstruktor:
-  constructor(private http : HttpClient) {} 
+  constructor(private http : HttpClient, private router: Router) {}
 
   // Methode:
   ngOnInit(): void {
@@ -28,7 +31,6 @@ export class GameSelectionComponent implements OnInit {
 
     // Url als String:
     const queryString = window.location.search;
-    console.log(queryString);
 
     // Url-Parameter filtern:
     const urlParams = new URLSearchParams(queryString);
@@ -46,7 +48,7 @@ export class GameSelectionComponent implements OnInit {
 
     const min = 1;
     const max = 5;
-    
+
     if(username === "") {
       username = names[Math.floor(Math.random() * (max - min + 1) + min)]
     }
@@ -57,24 +59,17 @@ export class GameSelectionComponent implements OnInit {
       avatar_id: picture_id
     };
 
-    // Zu speicherne Werte:
-    console.log(username);
-    console.log(picture_id);
+
 
     // Speichern eines Spielers:
     this.http.post(apiUrlSpieler, items)
       .subscribe(
-        () => {
-          console.log('Datensatz wurde erfolgreich hiunzugefügt!');
-        },
-        (error) => {
-          console.error('Fehler beim Hinzufügen des Datensatzes:', error);
-        }
+
       )
   }
 
   // Button funktionalitäten:
-  handleClick() {   // Zoomspiel-Button
+  async handleClick() {   // Zoomspiel-Button
 
     // Urls:
     const apiUrlChat = 'http://localhost:3307/chat';
@@ -85,52 +80,52 @@ export class GameSelectionComponent implements OnInit {
 
     // Generieren einer 4-Stelligen Zufallszahl als Raumcode:
     this.raumcode = this.generateFourDigitRandomNumber();
-    console.log("Raumcode: ", this.raumcode);
 
     // Abfragen des Spielnames:
-    this.getSpielnameFromAPI(apiUrlSpiel)  
-    
+    this.getSpielnameFromAPI(apiUrlSpiel)
+
     // Chat erstellen:
     const chat_body = {
       raumcode: this.raumcode
     };
-    this.erstelleChat(apiUrlChat, chat_body);
-
-    // Erstellen eines Raumes:
 
 
+    const chat = await this.erstelleChat(`http://localhost:3307/createChat`).then(function (result) {
+      const resultArr = JSON.parse(JSON.stringify(result))
+      if (resultArr["success"]) {
+        return resultArr['chat']
+      }
+    });
+
+    const room = await this.createRoom(`http://localhost:3307/createRoom`, chat, spiel_id).then(function (result) {
+      return JSON.parse(JSON.stringify(result))
+    });
+    await this.router.navigate(['/app-gamepage', this.raumcode])
+  }
+
+  async createRoom(url: string,chat: number, spiel: number){
+    const raumPayload = {raumcode: this.raumcode, chat_id: chat, spiel_id:spiel }
+    return this.http.post(url.toString(), raumPayload).toPromise()
   }
 
   // HttpClient-Abfragen:
-  getSpielnameFromAPI(url:String) {
+  getSpielnameFromAPI(url: string) {
     this.http.get(url.toString())
     .subscribe(
       (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
-        let js_array = JSON.parse(JSON.stringify(response))
-        console.log(js_array[0]['spielname'])
-        console.log('Antwort: ', response);
+        const js_array = JSON.parse(JSON.stringify(response))
+
         this.spielname = js_array[0]['spielname']
-      },
-      (error) => {
-        console.error('Fehler: ', error);
       }
     );
   }
 
-  erstelleChat(url:String, raumcode:Number) {
-    this.http.post(url.toString(), raumcode)
-    .subscribe(
-      () => {
-        console.log('Chat wurde erstellt!');
-      },
-      (error) => {
-        console.error('Fehler beim erstellen des Chats:', error);
-      }
-    );
-  }
 
-  erstelleRaum(url:String) {
-    
+
+
+   async erstelleChat(url: string  ) {
+    const chatPayload = {raumcode: this.raumcode }
+    return this.http.post(url.toString(), chatPayload).toPromise()
   }
 
   // Hilfsfunktionen:

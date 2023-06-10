@@ -33,7 +33,7 @@ export class GamepageComponent implements OnInit {
     const randomIndex = Math.floor(Math.random() * pictureList.length);
     this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
   }
-  
+
   checkGuess() {
     const submitButton = document.getElementById("submit-button");
 
