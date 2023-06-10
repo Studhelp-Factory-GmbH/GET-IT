@@ -3,10 +3,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const events = require('./events');
-
+//Test
 // MySql-Datenbank verbinden:
 const db = mysql.createConnection({
-  host     : 'localhost',
+  host     : 'db',
   user     : 'db',
   password : 'db',
   database : 'db'
