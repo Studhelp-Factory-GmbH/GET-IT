@@ -4,7 +4,8 @@ function createRouter(db) {
   const router = express.Router();
   const owner = '';
 
-  // the routes are defined here
+  // Routen definitionen:
+  // --> Spieler erstellen:
   router.post('/spieler', (req, res) => {
     const { spielername, avatar_id } = req.body;
     const sql = 'INSERT INTO Spieler (spielername, avatar_id) VALUES (?, ?)';
@@ -19,21 +20,35 @@ function createRouter(db) {
     });
   });
 
-  router.post('/event', (req, res, next) => {
-    db.query(
-      'INSERT INTO events (owner, name, description, date) VALUES (?,?,?,?)',
-      [owner, req.body.name, req.body.description, new Date(req.body.date)],
-      (error) => {
-        if (error) {
-          console.error(error);
-          res.status(500).json({status: 'error'});
-        } else {
-          res.status(200).json({status: 'ok'});
-        }
+  // --> Raumerstellen:
+  router.post('/raum'), (req, res) => {
+    const { raumcode, spiel_id } = req.body;
+    const sql = 'INSERT INTO Raum (raumcode, spiel_id, chat_id) VALUES (?, ?, ?)';
+    db.query(sql, [raumcode, spiel_id], (err) => {
+      if(err) {
+        console.error('Fehler beim erstellen des Raums!', err);
+        res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});
+        return;
       }
-    );
-  });
+      res.json({ message: 'Raum erfolgreich erstellt!'});
+    });
+  }
 
+  // --> Chat erstellen:
+  router.post('/chat'), (req, res) => {
+    const { raumcode } = req.body;
+    const sql = 'INSERT INTO Raum (raumcode) VALUES (?)';
+    db.query(sql, [raumcode], (err) => {
+      if(err) {
+        console.error('Fehler beim erstellen des Raums!', err);
+        res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});
+        return;
+      }
+      res.json({ message: 'Raum erfolgreich erstellt!'});
+    });
+  }
+
+  // Spielnahmen abfragen:
   router.get('/spiel/:zahl', function (req, res) {
     const spiel_id = req.params.zahl;
     const sql = 'SELECT spielname FROM Spiel WHERE id=?'
@@ -48,6 +63,8 @@ function createRouter(db) {
     });
   });
 
+
+  // Irgendwas updaten:
   router.put('/event/:id', function (req, res, next) {
     db.query(
       'UPDATE events SET name=?, description=?, date=? WHERE id=? AND owner=?',
@@ -62,6 +79,7 @@ function createRouter(db) {
     );
   });
 
+  // Irgendwas löschen:
   router.delete('/event/:id', function (req, res, next) {
     db.query(
       'DELETE FROM events WHERE id=? AND owner=?',
@@ -75,7 +93,6 @@ function createRouter(db) {
       }
     );
   });
-
 
   return router;
 }
