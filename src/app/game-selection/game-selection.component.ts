@@ -8,18 +8,22 @@ import { HttpClient } from '@angular/common/http';
 })
 export class GameSelectionComponent implements OnInit {
   
+  // Attribute:
   protected readonly Component = Component;
-  
-  // Implementierung des HttpClients für die DB:
-  private apiUrlSpieler = 'http://localhost:3307/spieler';
+  spielname : any;
 
+  // Konstruktor:
   constructor(private http : HttpClient) {} 
 
+  // Methode:
   ngOnInit(): void {
     this.fetchItems();
   }
 
   fetchItems() : void {
+
+    const apiUrlSpieler = 'http://localhost:3307/spieler';
+
     // Url als String:
     const queryString = window.location.search;
     console.log(queryString);
@@ -31,13 +35,29 @@ export class GameSelectionComponent implements OnInit {
     const picture_id = urlParams.get('character')?.substring(23, 24);
     console.log(picture_id);
 
+    // Filtern ungültiger Namen:
+    const names = {
+      1: "Hans",
+      2: "Peter",
+      3: "Jürgen",
+      4: "Ferdinand",
+      5: "Franz"
+    }
+    const min = 1000;
+    const max = 9999;
+    Math.floor(Math.random() * (max - min + 1) + min);
+    if(username === "") {
+
+    }
+
     // Hinzufügen eines Spielers:
     const items = {
       spielername: username,
       avatar_id: picture_id
     };
 
-    this.http.post(this.apiUrlSpieler, items)
+    // Speichern eines Spielers:
+    this.http.post(apiUrlSpieler, items)
       .subscribe(
         () => {
           console.log('Datensatz wurde erfolgreich hiunzugefügt!');
@@ -55,6 +75,8 @@ export class GameSelectionComponent implements OnInit {
     const spiel_id = 1;
     const apiUrlSpiel = `http://localhost:3307/spiel/${spiel_id}`
     console.log(apiUrlSpiel)
+    
+    console.log((this.spielname))
     this.http.get(apiUrlSpiel)
     .subscribe(
       (response) => {
@@ -64,7 +86,6 @@ export class GameSelectionComponent implements OnInit {
         console.error('Fehler: ', error);
       }
     );
-
   }
 
   // Hilfsfunktionen:

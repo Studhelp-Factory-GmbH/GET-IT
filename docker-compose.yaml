@@ -40,7 +40,7 @@ services:
     volumes:
       - ./nodejs-server:/usr/src/app
     ports:
-      - "3000:3000"
+      - "3307:3307"
     networks:
       - web
 

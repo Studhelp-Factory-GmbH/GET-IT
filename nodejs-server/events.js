@@ -34,7 +34,7 @@ function createRouter(db) {
     );
   });
 
-  router.get('/spiel/:zahl', function (req, res, next) {
+  router.get('/spiel/:zahl', function (req, res) {
     const spiel_id = req.params.zahl;
     const sql = 'SELECT spielname FROM Spiel WHERE id=?'
     db.query(sql, [spiel_id], (error, results) => {
