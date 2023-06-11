@@ -61,6 +61,10 @@ export class GameSelectionComponent implements OnInit {
       avatar_id: picture_id
     };
 
+    // Setzen der Cookies: --> Erfasst Userdaten!
+    document.cookie = `username=${username};`;
+    document.cookie = `avatar_id=${picture_id};`;
+
     this.spielername = username;
 
     // Speichern eines Spielers:
