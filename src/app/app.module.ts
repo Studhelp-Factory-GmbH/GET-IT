@@ -10,6 +10,7 @@ import { CharacterSelectionComponent } from './character-selection/character-sel
 import {ImageSliderModule} from "./imageSlider/imageSlider.module";
 import { GamepageComponent } from './gamepage/gamepage.component';
 import { GameSelectionComponent } from './game-selection/game-selection.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -25,10 +26,11 @@ import { GameSelectionComponent } from './game-selection/game-selection.componen
     RouterModule.forRoot([
       {path: "", component: CharacterSelectionComponent},
       {path: "app-gamepage/:roomcode", component: GamepageComponent},
-      {path: "game-selection", component: GameSelectionComponent}
+      {path: "game-selection", component: GameSelectionComponent},
     ]),
     NgOptimizedImage,
-    ImageSliderModule
+    ImageSliderModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

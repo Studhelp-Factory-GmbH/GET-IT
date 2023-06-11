@@ -50,6 +50,7 @@ function createRouter(db) {
     });
   });
 
+
   // --> Hole Spieler von dem Raum
   router.post('/getPlayer', (req, res) => {
     const { raumcode } = req.body;
@@ -97,10 +98,11 @@ function createRouter(db) {
   });
 
   // --> Nachricht erstellen:
-  router.post('/message'), (req, res) => {
-    const { message, chat_id, spieler_id } = req.body;
-    const sql = 'INSERT INTO Nachricht (nachricht_string, chat_id, spieler_id) VALUES (?, ?, ?)';
-    db.query(sql, [raumcode], (err) => {
+
+  router.post('/message', (req, res) => {
+    const { message, chat_id } = req.body;
+    const sql = 'INSERT INTO Nachricht (nachricht_string, chat_id) VALUES (?, ?)';
+    db.query(sql, [message,chat_id], (err) => {
       if(err) {
         console.error('Failed creating message!', err);
         res.status(500).json({ error: 'Failed creating message!'});
@@ -108,11 +110,12 @@ function createRouter(db) {
       }
       res.json({ message: 'Created message susscesfully!'});
     });
-  }
+  });
 
   // Spielnahmen abfragen:
   router.get('/spiel/:zahl', function (req, res) {
     const spiel_id = req.params.zahl;
+    console.log(spiel_id)
     const sql = 'SELECT spielname FROM Spiel WHERE id=?'
     db.query(sql, [spiel_id], (error, results) => {
       if (error) {
@@ -155,6 +158,39 @@ function createRouter(db) {
       }
     );
   });
+
+  // Irgendwas updaten:
+  router.post('/imageIntoRoom', function (req, res, next) {
+    const { raumcode, image } = req.body;
+    console.log(raumcode);
+    console.log(image)
+    db.query(
+      'UPDATE Raum SET image=? WHERE raumcode=?', [image,raumcode],
+      (error) => {
+        if (error) {
+          console.log(error)
+          res.status(500).json({status: 'error'});
+        } else {
+          res.status(200).json({status: 'ok'});
+        }
+      }
+    );
+  });
+
+  router.post('/getimageIntoRoom', function (req, res, next) {
+    const { raumcode } = req.body;
+    db.query(
+      'Select image from Raum where raumcode=?', [raumcode],
+      (error, result) => {
+        if (error) {
+          res.status(500).json({status: 'error'});
+        }
+        let resRow = Object.values(JSON.parse(JSON.stringify(result)));
+        res.status(200).json({ image: resRow[0].image});
+      }
+    );
+  });
+
 
   // Irgendwas löschen:
   router.delete('/event/:id', function (req, res, next) {

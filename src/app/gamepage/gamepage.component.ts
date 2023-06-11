@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
+import {SseService} from "../sse.service";
+
 
 @Component({
   selector: 'app-gamepage',
@@ -10,25 +12,80 @@ import {ActivatedRoute} from '@angular/router';
 
 export class GamepageComponent implements OnInit {
 
+  chatID: void | number = 0;
+  formData = {
+    guess: undefined
+  };
+  submitMessage() {
+    this.createMessage()
+  }
+
+  createMessage(){
+    const url = 'http://localhost:3000/fact';
+    const data = {
+      message:this.formData.guess,
+    };
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.post(url, data, { headers })
+      .subscribe(response => {
+        console.log(response);
+      }, error => {
+        console.error(error);
+      });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    document.getElementById("guess-input").value = ""
+  }
+
+
   zoomedPictureSrc!: string;
   zoomedPicture!: HTMLElement;
   zoomLevel = 35;
   zoomIncrement = 0.15;
   roomCode = "";
 
-  constructor(private http : HttpClient, private route:ActivatedRoute)
+  constructor(private http : HttpClient, private route:ActivatedRoute, private sseService: SseService)
   {
   }
 
   async ngOnInit() {
+    this.sseService
+      .getServerSentEvent("http://localhost:3000/events")
+      .subscribe(data => {
+          if (Array.isArray(JSON.parse(data.data))){
+            JSON.parse(data.data).forEach((message: { message: string}) =>{
+              const para = document.createElement("p");
+
+              if (this.checkGuess(message.message)){
+                para.style.color = "#00FF00"
+              }
+              const node = document.createTextNode(message.message);
+              para.appendChild(node);
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              document.getElementById("chatMessages").append(para);
+            });
+          }
+          else {
+            const para = document.createElement("p");
+            const node = document.createTextNode((JSON.parse(data.data).message));
+            para.appendChild(node);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            document.getElementById("chatMessages").append(para);
+          }
+      });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.zoomedPicture = document.getElementById("zoomed-picture");
     this.startZoomOutInterval();
-    this.checkGuess();
-    this.getRandomPicture()
-
+    this.getRandomPicture();
+    this.chatID = await this.getChatID(2423).then(function (result) {
+      const resultArr = JSON.parse(JSON.stringify(result))
+      return resultArr[0]['id']
+    });
     this.roomCode = this.route.snapshot.params['roomcode'];
-
     // test um die Spieler zu laden, das muss noch gemacht werden, ist noch buggy!
     const player_count = await this.getPlayer("http://localhost:3307/getPlayer").then(function (result) {
       const resultArr = JSON.parse(JSON.stringify(result))
@@ -36,7 +93,6 @@ export class GamepageComponent implements OnInit {
         console.log(resultArr);
         return resultArr['players']
       }
-      console.log(resultArr);
     });
 
   }
@@ -46,64 +102,61 @@ export class GamepageComponent implements OnInit {
   // Buttons:
 
   // API-Abfragen:
-  getChatID(roomcode:number) {
-    this.http.get(`http://localhost:3307/spiel/${roomcode}`)
-    .subscribe(
-      (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
-        console.log('Answer: ', response);
-        return response;
-      },
-      (error) => {
-        console.error('Failed: ', error);
-      }
-    );
+  async getChatID(roomcode:number) {
+    return this.http.get(`http://localhost:3307/chat/${roomcode}`).toPromise()
   }
 
-  createMessage(data:string) {
-    this.http.post('http://localhost:3307/spieler', data)
+  async getImageInRoom(){
+    const data = {
+      raumcode :this.getRoomcode(),
+    };
+    return this.http.post(`http://localhost:3307/getimageIntoRoom`, data).toPromise()
   }
 
-  // ---
-
-
-  getRandomPicture() {
-    const pictureList = [
-      "garry_1.png",
-      "patrick_1.png",
-      "sandy_1.png",
-      "spongebob_1.png",
-      "spongebob_2.png"
-    ];
-    const randomIndex = Math.floor(Math.random() * pictureList.length);
-    this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
+  getRoomcode() {
+    const parts = document.location.toString().split('/');
+    return parts.at(-1);
   }
+  async getRandomPicture() {
 
-  checkGuess() {
-    const submitButton = document.getElementById("submit-button");
-
-    // @ts-ignore
-    submitButton.addEventListener("click", () => {
-      const guessInput = document.getElementById("guess-input") as HTMLInputElement;
-
-      const guess = guessInput.value.trim().toLowerCase();
-      const pictureFilename = this.zoomedPicture.querySelector("img")?.getAttribute("src");
-      const pictureName = pictureFilename ? pictureFilename.substring(pictureFilename.lastIndexOf("/") + 1, pictureFilename.lastIndexOf(".")).toLowerCase() : '';
-      const final_pictureName = pictureName.slice(0, -2);
-
-      //console.log(final_pictureName);
-      //console.log(guess)
-
-      // --> API-Call: Saving the messages!
-      const raumcode = this.route.snapshot.params['roomcode'];
-      console.log(raumcode);
-      this.getChatID(raumcode);
-
-      if (guess === final_pictureName) {
-        alert("Richtig!");
-      } else {
-        alert("Falsch!");
-      }
+    const image = await this.getImageInRoom().then(function (result) {
+      const resultArr = JSON.parse(JSON.stringify(result));
+      return resultArr.image
     });
+    console.log(image)
+    if (image === ""){
+      const pictureList = [
+        "garry_1.png",
+        "patrick_1.png",
+        "sandy_1.png",
+        "spongebob_1.png",
+        "spongebob_2.png"
+      ];
+      const randomIndex = Math.floor(Math.random() * pictureList.length);
+      const imageUrl = 'assets/guessing-pictures/' + pictureList[randomIndex];
+      console.log(imageUrl)
+      const data = {
+
+        raumcode :this.getRoomcode(),
+        image: imageUrl
+      };
+      this.http.post(`http://localhost:3307/imageIntoRoom`, data).toPromise()
+
+      this.zoomedPictureSrc = imageUrl
+    }
+    else {
+      console.log(image)
+      this.zoomedPictureSrc = image;
+    }
+
+  }
+  checkGuess(guessInput: string) {
+    // @ts-ignore
+    const guess = guessInput.trim().toLowerCase();
+    const pictureFilename = this.zoomedPicture.querySelector("img")?.getAttribute("src");
+    const pictureName = pictureFilename ? pictureFilename.substring(pictureFilename.lastIndexOf("/") + 1, pictureFilename.lastIndexOf(".")).toLowerCase() : '';
+    const final_pictureName = pictureName.slice(0, -2);
+    return guess === final_pictureName;
   }
 
   startZoomOutInterval() {
@@ -166,5 +219,4 @@ export class GamepageComponent implements OnInit {
     document.execCommand("copy");
     document.body.removeChild(textAreaElement);
   }
-
 }

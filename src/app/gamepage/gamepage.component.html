@@ -49,22 +49,23 @@
       <div class="game-chat background">
         <div class="font-white f-1"> Chat</div>
         <div class="chat background">
-          <div class="chat-messages"></div>
-          <div class="chat-controls-container">
-            <div class="chat-controls">
-              <div>
-                <input id="guess-input" type="text" placeholder="Guess it!" name="chat-message">
-              </div>
-              <div>
-                <button id="submit-button" type="submit" class="primary-button">GET IT!</button>
+          <div class="chat-messages" id="chatMessages"></div>
+          <form (ngSubmit)="submitMessage()" #myForm="ngForm">
+            <div class="chat-controls-container">
+              <div class="chat-controls">
+                <div>
+                  <input id="guess-input" type="text" placeholder="Guess it!" name="chat-message" [(ngModel)]="formData.guess" >
+                </div>
+                <div>
+                  <button id="submit-button" type="submit" class="primary-button">GET IT!</button>
+                </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-
 
 <div class="mobile-chat">
   <div class="chat-controls">
