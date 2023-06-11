@@ -34,7 +34,7 @@ export class GamepageComponent implements OnInit {
       const resultArr = JSON.parse(JSON.stringify(result))
       if (resultArr["success"]) {
         console.log(resultArr);
-        //return resultArr['chat']
+        return resultArr['players']
       }
       console.log(resultArr);
     });

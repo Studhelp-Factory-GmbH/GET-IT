@@ -20,33 +20,32 @@ function createRouter(db) {
   });
 
   // --> Hole Spieler_id durch Spielername (wird gebraucht für die game selection page, um es für die funktion insertPlayerIntoRoom machen zu können)
-  router.post('/getPlayerIdFromName', (req, res) => {
+  /*router.post('/getPlayerIdFromName', (req, res) => {
     const { spielername}  = req.body;
     const sql = 'SELECT id FROM Spieler WHERE spielername = (?)';
     db.query(sql, [spielername], (err, result) => {
       if (err) {
-        console.error('Fehler beim Suchen von dem Spieler', err, res);
+        console.error('Fehler beim Suchen von dem Spieler', err);
         res.status(500).json({ error: 'Fehler beim Suchen vom Spieler' });
         return;
       }
 
-      console.log("result: " + result)
-      res.json({ message: 'Spieler erfolgreich gefunden', id: result.id});
+      let parsed_result = Object.values(JSON.parse(JSON.stringify(result)));
+      console.log("result: " + parsed_result)
+      res.json({ message: 'Spieler erfolgreich gefunden', id: parsed_result});
     });
-  });
+  });*/
 
   // --> Füge Spieler zu dem Raum hinzu (TODO: Füge es in game selection hinzu)
   router.post('/insertPlayerIntoRoom', (req, res) => {
     const { raumcode, spieler_id}  = req.body;
     const sql = 'INSERT INTO Spieler_Raum (spieler_id, raumcode) VALUES (?,?) ';
-    db.query(sql, [raumcode, spieler_id], (err, result) => {
+    db.query(sql, [spieler_id, raumcode], (err) => {
       if (err) {
-        console.error('Fehler beim Einfügen der Spieler:', err, res);
+        console.error('Fehler beim Einfügen der Spieler:', err);
         res.status(500).json({ error: 'Fehler beim Einfügen vom Spieler' });
         return;
       }
-
-      console.log("result: " + result)
       res.json({ message: 'Spieler erfolgreich zum Raum hinzugefügt'});
     });
   });
@@ -61,9 +60,9 @@ function createRouter(db) {
         res.status(500).json({ error: 'Fehler beim Suchen der Daten' });
         return;
       }
-
-      console.log("result: " + result)
-      res.json({ message: 'Spieler erfolgreich eingefügt', players: result.spieler_id});
+      let parsed_result = Object.values(JSON.parse(JSON.stringify(result)));
+      console.log("result: " + parsed_result)
+      res.json({ message: 'Spieler erfolgreich eingefügt', players: parsed_result});
     });
   });
 

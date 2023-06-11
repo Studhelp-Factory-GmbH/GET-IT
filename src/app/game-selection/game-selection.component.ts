@@ -101,16 +101,20 @@ export class GameSelectionComponent implements OnInit {
       return JSON.parse(JSON.stringify(result))
     });
 
-    // Hole id vom Spieler
-    const id = await this.getPlayerIdFromName('http://localhost:3307/getPlayerIdFromName', this.spielername).then(function(result){
+    // Hole id vom Spieler - DEPRECATED
+    /*const id = await this.getPlayerIdFromName('http://localhost:3307/getPlayerIdFromName', this.spielername).then(function(result){
       return JSON.parse(JSON.stringify(result))
     });
-    console.log(id)
+    console.log(id)*/
 
-    // TODO
-    // Füge spieler zu dem Raum hinzu
-    // Nutze rest
+    // HIER KOMMEN DIE COOKIE-DINGER rein
+    const id = 0;
 
+    // Füge Spieler zum Raum hinzu
+    const add_result = await this.addPlayerToRoom('http://localhost:3307/insertPlayerIntoRoom', id).then(function(result){
+      return JSON.parse(JSON.stringify(result))
+    });
+    console.log(add_result)
 
     await this.router.navigate(['/app-gamepage', this.raumcode])
   }
@@ -131,11 +135,16 @@ export class GameSelectionComponent implements OnInit {
     );
   }
 
+
+
   async createRoom(url: string,chat: number, spiel: number){
     const raumPayload = {raumcode: this.raumcode, chat_id: chat, spiel_id:spiel }
     return this.http.post(url.toString(), raumPayload).toPromise()
   }
 
+  /**
+    * @deprecated The method should not be used
+  */
   async getPlayerIdFromName(url: string, spielername: string) {
     const playerIdPayload = {spielername: spielername}
     return this.http.post(url.toString(), playerIdPayload).toPromise()
