@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,10 +20,11 @@ import { GameSelectionComponent } from './game-selection/game-selection.componen
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     RouterModule.forRoot([
       {path: "", component: CharacterSelectionComponent},
-      {path: "app-gamepage", component: AppComponent},
+      {path: "app-gamepage/:roomcode", component: GamepageComponent},
       {path: "game-selection", component: GameSelectionComponent}
     ]),
     NgOptimizedImage,

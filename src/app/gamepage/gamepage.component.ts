@@ -1,27 +1,70 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-gamepage',
   templateUrl: './gamepage.component.html',
   styleUrls: ['./gamepage.component.scss']
 })
+
 export class GamepageComponent implements OnInit {
 
   zoomedPictureSrc!: string;
-
   zoomedPicture!: HTMLElement;
   zoomLevel = 35;
   zoomIncrement = 0.15;
+  roomCode = "";
 
+  constructor(private http : HttpClient, private route:ActivatedRoute)
+  {
+  }
 
-
-  ngOnInit() {
+  async ngOnInit() {
     // @ts-ignore
     this.zoomedPicture = document.getElementById("zoomed-picture");
     this.startZoomOutInterval();
     this.checkGuess();
     this.getRandomPicture()
+
+    this.roomCode = this.route.snapshot.params['roomcode'];
+
+    // test um die Spieler zu laden, das muss noch gemacht werden, ist noch buggy!
+    const player_count = await this.getPlayer("http://localhost:3307/getPlayer").then(function (result) {
+      const resultArr = JSON.parse(JSON.stringify(result))
+      if (resultArr["success"]) {
+        console.log(resultArr);
+        //return resultArr['chat']
+      }
+      console.log(resultArr);
+    });
+
   }
+
+
+  // ---
+  // Buttons:
+
+  // API-Abfragen:
+  getChatID(roomcode:number) {
+    this.http.get(`http://localhost:3307/spiel/${roomcode}`)
+    .subscribe(
+      (response) => {   // --> [{"spielname":"Zoom-Spiel"}]
+        console.log('Answer: ', response);
+        return response;
+      },
+      (error) => {
+        console.error('Failed: ', error);
+      }
+    );
+  }
+
+  createMessage(data:string) {
+    this.http.post('http://localhost:3307/spieler', data)
+  }
+
+  // ---
+
 
   getRandomPicture() {
     const pictureList = [
@@ -32,10 +75,9 @@ export class GamepageComponent implements OnInit {
       "spongebob_2.png"
     ];
     const randomIndex = Math.floor(Math.random() * pictureList.length);
-
     this.zoomedPictureSrc = 'assets/guessing-pictures/' + pictureList[randomIndex];
-
   }
+
   checkGuess() {
     const submitButton = document.getElementById("submit-button");
 
@@ -50,6 +92,11 @@ export class GamepageComponent implements OnInit {
 
       //console.log(final_pictureName);
       //console.log(guess)
+
+      // --> API-Call: Saving the messages!
+      const raumcode = this.route.snapshot.params['roomcode'];
+      console.log(raumcode);
+      this.getChatID(raumcode);
 
       if (guess === final_pictureName) {
         alert("Richtig!");
@@ -102,8 +149,13 @@ export class GamepageComponent implements OnInit {
     alert("Einladung in Zwischenablage kopiert! :)");
   }
 
+  async getPlayer(url: string) {
+    const playerPayload = {raumcode: this.roomCode }
+    return this.http.post(url.toString(), playerPayload).toPromise()
+  }
+
   getRaumcode() {
-    return "getRaumcode()";
+    return this.roomCode;
   }
 
   copyTextToClipboard(text: string) {

@@ -12,6 +12,11 @@ services:
     volumes:
       - ./:/home/node/app
       - node_modules:/home/node/app/node_modules
+    networks:
+      - web
+    restart: always
+
+
   db:
     container_name: get-it-database
     image: mariadb:10.3
@@ -21,18 +26,30 @@ services:
       MYSQL_USER: 'db'
       MYSQL_PASSWORD: 'db'
       MYSQL_ROOT_PASSWORD: 'db'
+    volumes:
+      - database:/var/lib/mysql
     ports:
       - '3306:3306'
     expose:
       - '3306'
+    networks:
+      - web
+
+  api:
+    container_name: get-it-node-server
+    image: sample-express-app
+    build: ./nodejs-server
     volumes:
-      - database:/var/lib/mysql
+      - ./nodejs-server:/usr/src/app
+    ports:
+      - "3307:3307"
+    networks:
+      - web
+    restart: always
 
   phpmyadmin:
     container_name: get-it-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    links:
-      - db
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
@@ -40,7 +57,12 @@ services:
     restart: always
     ports:
       - 8080:80
+    networks:
+      - web
+
 volumes:
   database:
   node_modules:
 
+networks:
+  web:

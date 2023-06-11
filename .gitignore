@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 
 auth.json
+./nodejs-server/node_modules
