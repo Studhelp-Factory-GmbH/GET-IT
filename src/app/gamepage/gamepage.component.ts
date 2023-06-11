@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {SseService} from "../sse.service";
+import {using} from "rxjs";
 
 
 @Component({
@@ -21,9 +22,22 @@ export class GamepageComponent implements OnInit {
   }
 
   createMessage(){
+    const cookies = document.cookie;
+    const cookieObj = {
+      username: undefined,
+      avatar_id: undefined
+    };
+    cookies.split(';').forEach(cookie => {
+      const [name, value] = cookie.trim().split('=');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      cookieObj[name] = decodeURIComponent(value);
+    });
+
     const url = 'http://localhost:3000/fact';
     const data = {
       message:this.formData.guess,
+      username: cookieObj.username
     };
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -53,29 +67,43 @@ export class GamepageComponent implements OnInit {
     this.sseService
       .getServerSentEvent("http://localhost:3000/events")
       .subscribe(data => {
-          if (Array.isArray(JSON.parse(data.data))){
-            JSON.parse(data.data).forEach((message: { message: string}) =>{
-              const para = document.createElement("p");
-
-              if (this.checkGuess(message.message)){
-                para.style.color = "#00FF00"
-              }
-              const node = document.createTextNode(message.message);
-              para.appendChild(node);
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              document.getElementById("chatMessages").append(para);
-            });
-          }
-          else {
+        if (Array.isArray(JSON.parse(data.data))){
+          JSON.parse(data.data).forEach((message: { message: string; username: string}) =>{
             const para = document.createElement("p");
-            const node = document.createTextNode((JSON.parse(data.data).message));
+            console.log(message)
+            if (this.checkGuess(message.message)){
+              para.style.color = "#00FF00"
+            }
+            const node = document.createTextNode( message.username + ' : ' + message.message);
             para.appendChild(node);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             document.getElementById("chatMessages").append(para);
-          }
+          });
+        }
+        else {
+          const para = document.createElement("p");
+          const node = document.createTextNode((JSON.parse(data.data)).username + ' : ' + (JSON.parse(data.data).message));
+          para.appendChild(node);
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          document.getElementById("chatMessages").append(para);
+        }
       });
+
+    const cookies = document.cookie;
+    const cookieObj = {
+      username: undefined,
+      avatar_id: undefined
+    };
+    cookies.split(';').forEach(cookie => {
+      const [name, value] = cookie.trim().split('=');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      cookieObj[name] = decodeURIComponent(value);
+    });
+
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.zoomedPicture = document.getElementById("zoomed-picture");

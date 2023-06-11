@@ -41,4 +41,8 @@ export class ImageSliderComponent{
   getCurrentSlideUrl() {
     return `url('${this.slides[this.currentIndex].url}')`;
   }
+  getCurrentSlideUrlOnlyURl(){
+    return this.slides[this.currentIndex].url;
+
+  }
 }

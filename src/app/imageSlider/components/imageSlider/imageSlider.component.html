@@ -15,7 +15,7 @@
     >
       <span *ngIf="slideIndex === getCurrentIndex()" style="color: white">
           ●
-        <input type="hidden" name="character" form="character" value="{{getCurrentSlideUrl()}}">
+        <input type="hidden" name="character" form="character" value="{{getCurrentSlideUrlOnlyURl()}}" id="charakter">
       </span>
       <span *ngIf="slideIndex !== getCurrentIndex()">
         ●
