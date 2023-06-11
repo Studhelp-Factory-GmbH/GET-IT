@@ -72,7 +72,7 @@ function createRouter(db) {
   router.post('/createRoom', (req, res) => {
     const { raumcode, spiel_id, chat_id } = req.body;
     const sql = 'INSERT INTO Raum (raumcode, spiel_id, chat_id) VALUES (?, ?, ?)';
-    db.query(sql, [raumcode, spiel_id, chat_id], (err, res) => {
+    db.query(sql, [raumcode, spiel_id, chat_id], (err) => {
       if(err) {
         console.error('Fehler beim erstellen des Raums!', err);
         res.status(500).json({ error: 'Fehler beim erstellen des Raums!'});
