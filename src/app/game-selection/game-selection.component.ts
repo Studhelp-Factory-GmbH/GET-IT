@@ -28,7 +28,7 @@ export class GameSelectionComponent implements OnInit {
 
   fetchItems() : void {
 
-    // Urls:
+/*    // Urls:
     const apiUrlSpieler = 'http://localhost:3307/spieler'
 
     // Url als String:
@@ -72,7 +72,7 @@ export class GameSelectionComponent implements OnInit {
       (error) => {
         console.error('Fehler beim Hinzufügen des Spielers:', error);
       }
-    )
+    )*/
   }
 
   // Button funktionalitäten:
@@ -84,10 +84,7 @@ export class GameSelectionComponent implements OnInit {
 
     // Generieren einer 4-Stelligen Zufallszahl als Raumcode:
     this.raumcode = this.generateFourDigitRandomNumber();
-    console.log("Raumcode: ", this.raumcode);
 
-    // Abfragen des Spielnames:
-    this.getSpielnameFromAPI(apiUrlSpiel)
 
     const chat = await this.erstelleChat(`http://localhost:3307/createChat`).then(function (result) {
       const resultArr = JSON.parse(JSON.stringify(result))
@@ -96,25 +93,20 @@ export class GameSelectionComponent implements OnInit {
       }
     });
 
+    console.log("raum erstellen")
     // Erstellen eines Raumes:
     const room = await this.createRoom(`http://localhost:3307/createRoom`, chat, spiel_id).then(function (result) {
+      console.log(JSON.parse(JSON.stringify(result)));
       return JSON.parse(JSON.stringify(result))
     });
 
-    // Hole id vom Spieler - DEPRECATED
-    /*const id = await this.getPlayerIdFromName('http://localhost:3307/getPlayerIdFromName', this.spielername).then(function(result){
-      return JSON.parse(JSON.stringify(result))
-    });
-    console.log(id)*/
-
-    // HIER KOMMEN DIE COOKIE-DINGER rein
-    const id = 0;
+   /* const id = 0;
 
     // Füge Spieler zum Raum hinzu
     const add_result = await this.addPlayerToRoom('http://localhost:3307/insertPlayerIntoRoom', id).then(function(result){
       return JSON.parse(JSON.stringify(result))
     });
-    console.log(add_result)
+    console.log(add_result)*/
 
     await this.router.navigate(['/app-gamepage', this.raumcode])
   }

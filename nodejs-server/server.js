@@ -6,7 +6,7 @@ const events = require('./events');
 
 // MySql-Datenbank verbinden:
 const db = mysql.createConnection({
-  host     : 'db',
+  host     : 'localhost',
   user     : 'db',
   password : 'db',
   database : 'db'

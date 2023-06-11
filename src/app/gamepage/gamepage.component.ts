@@ -81,7 +81,7 @@ export class GamepageComponent implements OnInit {
     this.zoomedPicture = document.getElementById("zoomed-picture");
     this.startZoomOutInterval();
     this.getRandomPicture();
-    this.chatID = await this.getChatID(2423).then(function (result) {
+    this.chatID = await this.getChatID(Number(this.getRoomcode())).then(function (result) {
       const resultArr = JSON.parse(JSON.stringify(result))
       return resultArr[0]['id']
     });
@@ -96,7 +96,6 @@ export class GamepageComponent implements OnInit {
     });
 
   }
-
 
   // ---
   // Buttons:
@@ -123,8 +122,7 @@ export class GamepageComponent implements OnInit {
       const resultArr = JSON.parse(JSON.stringify(result));
       return resultArr.image
     });
-    console.log(image)
-    if (image === ""){
+    if (image === null){
       const pictureList = [
         "garry_1.png",
         "patrick_1.png",
@@ -136,7 +134,6 @@ export class GamepageComponent implements OnInit {
       const imageUrl = 'assets/guessing-pictures/' + pictureList[randomIndex];
       console.log(imageUrl)
       const data = {
-
         raumcode :this.getRoomcode(),
         image: imageUrl
       };
