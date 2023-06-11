@@ -99,8 +99,8 @@ function createRouter(db) {
 
   // --> Nachricht erstellen:
   router.post('/message'), (req, res) => {
-    const { message, chat_id } = req.body;
-    const sql = 'INSERT INTO Nachricht (nachricht_string, chat_id) VALUES (?, ?)';
+    const { message, chat_id, spieler_id } = req.body;
+    const sql = 'INSERT INTO Nachricht (nachricht_string, chat_id, spieler_id) VALUES (?, ?, ?)';
     db.query(sql, [raumcode], (err) => {
       if(err) {
         console.error('Failed creating message!', err);
