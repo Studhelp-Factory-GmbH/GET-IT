@@ -1,16 +1,23 @@
 .image-box {
     display: flex;
-    flex-wrap: wrap;
   }
   
+  .name {
+    height: auto;
+    width: auto;
+    font-size: initial;
+    font-family: 'Mutant';
+    color: white;
+  }
+
   .image {
-    flex-basis: 25%;
-    display: flex;
     justify-content: center;
+    flex-direction: column;
+    display: inline-flex;
     align-items: center;
+    margin-inline: auto;
     box-sizing: border-box;
   }
-  
   img {
     width: 50%;
     height: 75%;

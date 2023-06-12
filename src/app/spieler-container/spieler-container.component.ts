@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-spieler-container',
@@ -6,24 +6,33 @@ import { Component } from '@angular/core';
   styleUrls: ['./spieler-container.component.scss']
 })
 export class SpielerContainerComponent {
+
+  // Attribute:
+  username : string | undefined = "";
+  avatar_id : string | undefined = "";
+
   imageUrls: string[] = [
-    '/assets/character/1.png' ,
-    '/assets/character/2.png',
-    '/assets/character/3.png' ,
-    '/assets/character/4.png',
-    '/assets/character/5.png' ,
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
-    '/assets/character/6.png',
+    `${this.avatar_id}` ,
   ];
+
+  ngOnInit() {
+    const cookies = document.cookie;
+    const cookieObj = {
+      username: undefined,
+      avatar_id: undefined
+    };
+    cookies.split(';').forEach(cookie => {
+      const [name, value] = cookie.trim().split('=');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      cookieObj[name] = decodeURIComponent(value);
+    });
+    this.username = cookieObj.username;
+    this.avatar_id = cookieObj.avatar_id;
+
+    this.imageUrls = [ `${this.avatar_id}`]
+
+    console.log(this.avatar_id, this.username);
+  }
+   
 }

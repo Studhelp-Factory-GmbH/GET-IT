@@ -74,6 +74,9 @@ export class GamepageComponent implements OnInit {
             if (this.checkGuess(message.message)){
               para.style.color = "#00FF00"
             }
+            else {
+              para.style.color = "#FFFFFF"
+            }
             const node = document.createTextNode( message.username + ' : ' + message.message);
             para.appendChild(node);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -83,7 +86,15 @@ export class GamepageComponent implements OnInit {
         }
         else {
           const para = document.createElement("p");
-          const node = document.createTextNode((JSON.parse(data.data)).username + ' : ' + (JSON.parse(data.data).message));
+          const message = JSON.parse(data.data).message;
+          const username = (JSON.parse(data.data)).username;
+          if (this.checkGuess(message)){
+            para.style.color = "#00FF00"
+          }
+          else {
+            para.style.color = "#FFFFFF"
+          }
+          const node = document.createTextNode(username + ' : ' + message);
           para.appendChild(node);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

@@ -16,17 +16,17 @@ services:
       - web
     restart: always
 
-  api:
-    container_name: get-it-node-server
-    image: sample-express-app
-    build: ./nodejs-server
-    volumes:
-      - ./nodejs-server:/usr/src/app
-    ports:
-      - "3307:3307"
-    networks:
-      - web
-    restart: always
+  # api:
+  #   container_name: get-it-node-server
+  #   image: sample-express-app
+  #   build: ./nodejs-server
+  #   volumes:
+  #     - ./nodejs-server:/usr/src/app
+  #   ports:
+  #     - "3307:3307"
+  #   networks:
+  #     - web
+  #   restart: always
 
   db:
     container_name: get-it-database
