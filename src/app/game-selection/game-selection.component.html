@@ -22,8 +22,8 @@
       <div class="row mt-5 custom-margin-bottom">
         <div class="col-12 text-center">
           <div class="d-flex align-items-center justify-content-center room">
-            <input type="text" class="form-control me-2 mb-2 custom-margin room-input"  placeholder="Raumcode eingeben">
-            <button class="btn btn-primary primary-button">Bestätigen</button>
+            <input id="eingabefeld" type="text" class="form-control me-2 mb-2 custom-margin room-input"  placeholder="Raumcode eingeben">
+            <button id="submit-button" class="btn btn-primary primary-button" type="button" (click)="joinGameWithRoomcode()">Bestätigen</button>
           </div>
         </div>
       </div>

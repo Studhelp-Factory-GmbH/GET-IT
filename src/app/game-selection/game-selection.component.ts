@@ -115,6 +115,14 @@ export class GameSelectionComponent implements OnInit {
     await this.router.navigate(['/app-gamepage', this.raumcode])
   }
 
+  // Über Raumcode joinen:
+  joinGameWithRoomcode() {
+    const roomcodeElement = document.getElementById("eingabefeld") as HTMLInputElement;
+    const roomcode = roomcodeElement.value;
+    const url = `/app-gamepage/${roomcode}`
+    this.router.navigate([url]);
+  }
+
   // HttpClient-Abfragen:
   getSpielnameFromAPI(url:string) {
     this.http.get(url.toString())
