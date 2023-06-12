@@ -169,47 +169,57 @@
         position: relative;
         width: 90%;
         height: 77%;
+        overflow: auto;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
 
-        .chat-controls-container{
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          transform: translate(-50%, -50%, -50%, -50%);
-          width: 100%;
-          margin: 0 auto 1%;
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .chat::-webkit-scrollbar {
+        display: none;
+      }
 
-          .chat-controls{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: baseline;
-            gap: 5%;
+      .chat-controls-container{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: translate(-50%, -50%, -50%, -50%);
+        width: 100%;
+        margin: 0 auto 1%;
+        // position: sticky;
 
-            input{
-              padding: 0.2em;
-              box-sizing: border-box;
-              width: 100%;
-              -moz-border-radius: 15px;
-              -webkit-border-radius: 15px;
-              -khtml-border-radius: 15px;
-              border-radius:15px;
-              border: solid;
-            }
-            button{
-              border: solid black;
-              -moz-border-radius: 15px;
-              -webkit-border-radius: 15px;
-              -khtml-border-radius: 15px;
-              border-radius:15px;
-              color: white;
-            }
+        .chat-controls{
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          align-items: baseline;
+          gap: 5%;
 
+          input{
+            padding: 0.2em;
+            box-sizing: border-box;
+            width: 100%;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -khtml-border-radius: 15px;
+            border-radius:15px;
+            border: solid;
           }
-
+          button{
+            border: solid black;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            -khtml-border-radius: 15px;
+            border-radius:15px;
+            color: white;
+          }
         }
       }
+
     }
   }
+
+      
 
   .background{
     background-color: rgba($light-grey-body, 0.55);
