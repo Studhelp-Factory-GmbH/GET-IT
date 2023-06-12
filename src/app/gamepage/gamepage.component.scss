@@ -141,6 +141,18 @@
         position: relative;
         width: 90%;
         height: 65%;
+        overflow: auto;
+      }
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .character::-webkit-scrollbar {
+        display: none;
+      }
+    
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .character {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
       }
     }
 

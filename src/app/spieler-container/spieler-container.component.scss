@@ -1,0 +1,18 @@
+.image-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .image {
+    flex-basis: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  img {
+    width: 50%;
+    height: 75%;
+    object-fit: contain;
+  }

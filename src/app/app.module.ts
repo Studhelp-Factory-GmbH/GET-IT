@@ -11,6 +11,7 @@ import {ImageSliderModule} from "./imageSlider/imageSlider.module";
 import { GamepageComponent } from './gamepage/gamepage.component';
 import { GameSelectionComponent } from './game-selection/game-selection.component';
 import {FormsModule} from "@angular/forms";
+import { SpielerContainerComponent } from './spieler-container/spieler-container.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {FormsModule} from "@angular/forms";
     CharacterSelectionComponent,
     GamepageComponent,
     GameSelectionComponent,
+    SpielerContainerComponent,
   ],
   imports: [
     BrowserModule,
