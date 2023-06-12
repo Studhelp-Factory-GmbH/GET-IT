@@ -6,7 +6,6 @@ import { Component , OnInit } from '@angular/core';
   styleUrls: ['./spieler-container.component.scss']
 })
 export class SpielerContainerComponent {
-
   // Attribute:
   username : string | undefined = "";
   avatar_id : string | undefined = "";
@@ -14,7 +13,6 @@ export class SpielerContainerComponent {
   imageUrls: string[] = [
     `${this.avatar_id}` ,
   ];
-
   ngOnInit() {
     const cookies = document.cookie;
     const cookieObj = {
@@ -29,10 +27,7 @@ export class SpielerContainerComponent {
     });
     this.username = cookieObj.username;
     this.avatar_id = cookieObj.avatar_id;
-
     this.imageUrls = [ `${this.avatar_id}`]
-
-    console.log(this.avatar_id, this.username);
   }
    
 }

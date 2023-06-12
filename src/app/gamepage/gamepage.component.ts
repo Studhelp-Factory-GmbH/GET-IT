@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Route} from '@angular/router';
 import {SseService} from "../sse.service";
 import {using} from "rxjs";
+import {Router} from "@angular/router"
 
 
 @Component({
@@ -59,9 +60,11 @@ export class GamepageComponent implements OnInit {
   zoomIncrement = 0.15;
   roomCode = "";
 
-  constructor(private http : HttpClient, private route:ActivatedRoute, private sseService: SseService)
-  {
-  }
+  constructor(
+    private http : HttpClient, 
+    private route:ActivatedRoute, 
+    private sseService: SseService,
+    private router: Router) {}
 
   async ngOnInit() {
     this.sseService
@@ -89,7 +92,10 @@ export class GamepageComponent implements OnInit {
           const message = JSON.parse(data.data).message;
           const username = (JSON.parse(data.data)).username;
           if (this.checkGuess(message)){
-            para.style.color = "#00FF00"
+            para.style.color = "#00FF00";
+            const url = `/`
+            alert("Spieler: " + username + " hat gewonnen!");
+            this.router.navigate([url]);
           }
           else {
             para.style.color = "#FFFFFF"
